@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export function middleware(req: NextRequest) {
+export default function proxy(req: NextRequest) {
   const auth = req.headers.get('authorization')
 
   const user = process.env.PASSWORD_PROTECT_USER
@@ -23,9 +23,4 @@ export function middleware(req: NextRequest) {
   }
 
   return NextResponse.next()
-}
-
-// Make sure this matches the paths you want to protect
-export const config = {
-  matcher: '/:path*', // protects the entire site
 }
