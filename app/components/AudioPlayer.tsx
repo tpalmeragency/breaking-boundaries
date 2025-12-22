@@ -1,78 +1,78 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 
 interface AudioPlayerProps {
-  src: string
-  title?: string
+  src: string;
+  title?: string;
 }
 
 export default function AudioPlayer({ src, title }: AudioPlayerProps) {
-  const audioRef = useRef<HTMLAudioElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null);
 
-  const [playing, setPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(1)
+  const [playing, setPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
 
-  const [isReady, setIsReady] = useState(false)
-  const [isBuffering, setIsBuffering] = useState(true)
+  const [isReady, setIsReady] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(true);
 
   // Force preload & buffer on mount
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    audio.preload = 'auto'
-    audio.load()
-  }, [src])
+    audio.preload = 'auto';
+    audio.load();
+  }, [src]);
 
   const togglePlay = () => {
-    const audio = audioRef.current
-    if (!audio || !isReady || isBuffering) return
+    const audio = audioRef.current;
+    if (!audio || !isReady || isBuffering) return;
 
     if (audio.paused) {
-      audio.play()
-      setPlaying(true)
+      audio.play();
+      setPlaying(true);
     } else {
-      audio.pause()
-      setPlaying(false)
+      audio.pause();
+      setPlaying(false);
     }
-  }
+  };
 
   const seek = (time: number) => {
-    const audio = audioRef.current
-    if (!audio || !isReady) return
+    const audio = audioRef.current;
+    if (!audio || !isReady) return;
 
-    audio.currentTime = Math.min(Math.max(time, 0), duration)
-    setCurrentTime(audio.currentTime)
-  }
+    audio.currentTime = Math.min(Math.max(time, 0), duration);
+    setCurrentTime(audio.currentTime);
+  };
 
   return (
-    <div className="w-full bg-zinc-900 p-4 text-white">
+    <div className="fixed bottom-0 w-full bg-zinc-900 p-4 text-white">
       {/* Audio element */}
       <audio
         ref={audioRef}
         src={src}
         preload="auto"
         onLoadedMetadata={() => {
-          setDuration(audioRef.current?.duration ?? 0)
+          setDuration(audioRef.current?.duration ?? 0);
         }}
         onCanPlay={() => {
-          setIsReady(true)
-          setIsBuffering(false)
+          setIsReady(true);
+          setIsBuffering(false);
         }}
         onWaiting={() => setIsBuffering(true)}
         onPlaying={() => setIsBuffering(false)}
         onTimeUpdate={() => {
-          setCurrentTime(audioRef.current?.currentTime ?? 0)
+          setCurrentTime(audioRef.current?.currentTime ?? 0);
         }}
         onEnded={() => {
-          setPlaying(false)
+          setPlaying(false);
         }}
         onError={() => {
-          setIsReady(false)
-          setIsBuffering(false)
+          setIsReady(false);
+          setIsBuffering(false);
         }}
       />
 
@@ -118,13 +118,13 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
           step={0.01}
           value={volume}
           onChange={(e) => {
-            const v = Number(e.target.value)
-            setVolume(v)
-            if (audioRef.current) audioRef.current.volume = v
+            const v = Number(e.target.value);
+            setVolume(v);
+            if (audioRef.current) audioRef.current.volume = v;
           }}
           className="w-24 accent-indigo-500"
         />
       </div>
     </div>
-  )
+  );
 }

@@ -8,13 +8,29 @@
   --font-sans: var(--font-lexend);
   --font-display: var(--font-bebas);
   --font-mono: var(--font-geist-mono);
-  --font-test: var(--font-geist-sans);
+  --font-montserrat: var(--font-montserrat);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+  }
+}
+
+@layer components {
+  .border-gradient-brand {
+    border-bottom-width: 2px;
+    border-image-source: linear-gradient(
+      to right,
+      #fd4731 0%,
+      #fd42ab 14%,
+      #c52eb9 35%,
+      #8643d5 55%,
+      #5859e0 76%,
+      #1697f3 89%
+    );
+    border-image-slice: 1;
   }
 }
 
