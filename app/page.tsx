@@ -1,5 +1,7 @@
 import Image from 'next/image';
+import About from './components/About';
 import AudioPlayer from './components/AudioPlayer';
+import Video from './components/Video';
 import HeroSection from './components/Hero';
 
 export default function Home() {
@@ -7,10 +9,10 @@ export default function Home() {
   const sectionConstraints = 'w-full max-w-7xl mx-auto px-6 sm:px-16';
 
   return (
-    <div className="bg-zinc-50 font-sans dark:bg-black">
+    <div className="bg-(--bb-black) font-sans">
       <main className="flex w-full flex-col">
         {/* SECTION 1: Full Width (e.g., a Hero or Highlight) */}
-        <section className="w-full bg-zinc-200 dark:bg-zinc-900">
+        <section className="w-full bg-[#111111]">
           <HeroSection />
           <div className={`${sectionConstraints} py-20`}>
             <h2 className="text-lg font-semibold">Full Width Background</h2>
@@ -23,7 +25,12 @@ export default function Home() {
         </section>
 
         {/* SECTION 2: Contained (With Margins) */}
-        <section className={`${sectionConstraints} flex flex-col items-center py-20 text-center`}>
+        <section
+          className={`${sectionConstraints} flex flex-col items-center bg-(--bb-black) py-20 text-center`}
+        >
+          <Video videoId="Aq5WXmQQooo" />
+
+          <About />
           <Image
             className="mb-8 dark:invert"
             src="/next.svg"
