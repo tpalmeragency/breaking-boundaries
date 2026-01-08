@@ -2,7 +2,8 @@ import { Episode } from '../types/audio';
 
 export async function getEpisodes(limit = 6, page = 1): Promise<Episode[]> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/podcast-episode?_embed&per_page=${limit}&page=${page}`
+    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/podcast-episode?_embed&per_page=${limit}&page=${page}`,
+    { next: { revalidate: 60 } } // seconds
   );
 
   if (!res.ok) {

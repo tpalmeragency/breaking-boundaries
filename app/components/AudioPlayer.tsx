@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useEpisodeStore } from '../stores/useEpisodeStore';
-import { Play, Pause, SkipForward, Repeat, Volume2, ChevronDown } from 'lucide-react';
+import { Play, Pause, SkipForward, Repeat, Volume2, ChevronDown, Music } from 'lucide-react';
 
 export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -78,6 +78,8 @@ export default function AudioPlayer() {
         preload="auto"
         onLoadStart={() => {
           setPlaying(false);
+          setCurrentTime(0);
+          setIsReady(false);
         }}
         onLoadedMetadata={() => {
           setDuration(audioRef.current?.duration ?? 0);
@@ -101,12 +103,16 @@ export default function AudioPlayer() {
       />
 
       {/* 1. Thumbnail */}
-      <div className="flex h-18 w-18 flex-shrink-0 overflow-hidden rounded-sm">
-        <img
-          src={currentEpisode?.thumbnailSrc}
-          alt="Cover"
-          className="h-full w-full object-cover"
-        />
+      <div className="flex h-18 w-18 flex-shrink-0 items-center justify-center rounded-sm bg-zinc-800">
+        {currentEpisode?.thumbnailSrc ? (
+          <img
+            src={currentEpisode.thumbnailSrc}
+            alt="Cover"
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <Music className="h-6 w-6 text-zinc-500" />
+        )}
       </div>
 
       {/* 2. Metadata & Progress Section */}
