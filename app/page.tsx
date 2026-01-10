@@ -5,6 +5,8 @@ import Video from './components/Video';
 import HeroSection from './components/Hero';
 import RecentEpisodes from './components/RecentEpisodes';
 import { getEpisodes } from './util/getEpisodes';
+import Info from './components/Info';
+import CTA from './components/CTA';
 
 export default async function Home() {
   // Define a reusable Tailwind class for contained sections
@@ -24,15 +26,17 @@ export default async function Home() {
 
         {/* SECTION 2: Contained (With Margins) */}
         <section
-          className={`${sectionConstraints} flex flex-col items-center bg-(--bb-black) py-20 text-center`}
+          className={`${sectionConstraints} flex flex-col items-center bg-(--bb-black) text-center`}
         >
+          <Info />
           <Video videoId="Aq5WXmQQooo" />
-          <RecentEpisodes />
+          {/* <RecentEpisodes /> */}
           <About />
+          <CTA />
         </section>
 
         {/* SECTION 3: Audio Player Section */}
-        <AudioPlayer />
+        {/* <AudioPlayer /> */}
         <section className={sectionConstraints}></section>
       </main>
     </div>

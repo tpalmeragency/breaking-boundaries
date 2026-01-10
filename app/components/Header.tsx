@@ -4,14 +4,20 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Header() {
-  const navItems = ['Home', 'Episodes', 'About'];
+  const navItems = [
+    { name: 'Home', href: '#' },
+    { name: 'About', href: '#about' },
+    { name: 'Launch', href: '#launch' },
+  ];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const pathname = usePathname();
+  const handleScroll = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <header
-      className={`top-0 z-20 flex w-full items-center justify-between border-b border-transparent bg-[var(--bb-black)] px-20 pt-12 text-[var(--bb-white)]`}
+      className={`relative top-0 z-50 flex w-full items-center justify-between border-b border-transparent bg-[var(--bb-black)] px-20 pt-12 text-[var(--bb-white)]`}
     >
       {/* Logo */}
       <div className="flex items-center gap-3">
@@ -35,14 +41,14 @@ export default function Header() {
             {navItems.map((item, i) => (
               <li key={i} className="nav-item font-extra-light flex items-center gap-2">
                 <div className="relative">
-                  <span className="invisible block font-medium">{item}</span>
+                  <span className="invisible block font-medium">{item.name}</span>
 
                   {/* visible text */}
                   <a
-                    href={'/'}
+                    href={item.href}
                     className="absolute top-0 left-0 font-extralight transition-[font-weight] hover:cursor-pointer hover:font-medium"
                   >
-                    {item}
+                    {item.name}
                   </a>
                 </div>
               </li>
@@ -68,23 +74,17 @@ export default function Header() {
 
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
-        <div className="absolute top-full right-0 left-0 border-b border-gray-200 bg-white shadow-lg lg:hidden">
+        <div className="absolute top-full right-0 left-0 bg-[var(--bb-black)] shadow-lg lg:hidden">
           <nav className="px-4 py-4">
             <ul className="space-y-3">
               {navItems.map((item, i) => (
                 <li key={i}>
                   <a
-                    className="flex items-center justify-between py-2 text-base font-medium text-gray-900 hover:text-gray-700"
-                    href={'/'}
+                    className="flex items-center justify-between py-2 font-sans text-base font-medium text-white hover:text-gray-700"
+                    onClick={handleScroll}
+                    href={item.href}
                   >
-                    {item}
-                    <Image
-                      src="/icons/arrow-back-ios.svg"
-                      alt="Chevron Arrow Down"
-                      width={18}
-                      height={18}
-                      priority
-                    />
+                    {item.name}
                   </a>
                 </li>
               ))}

@@ -6,7 +6,7 @@ export default function Video({ videoId }: { videoId: string }) {
   const [playing, setPlaying] = useState(false);
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden bg-black hover:cursor-pointer">
+    <div className="relative my-20 aspect-video w-full overflow-hidden bg-black hover:cursor-pointer">
       {!playing ? (
         <button
           onClick={() => setPlaying(true)}

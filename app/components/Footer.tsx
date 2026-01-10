@@ -6,6 +6,7 @@ const Footer = () => {
   const textStyles = 'font-sans font-extralight transition-colors';
   return (
     <footer className="bg-[#0E0E0E] px-6 py-12 text-gray-300 md:px-20">
+      {/* Footer content */}
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 md:flex-row md:items-center">
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
@@ -28,21 +29,10 @@ const Footer = () => {
 
             {/* visible text */}
             <Link
-              href={'/'}
+              href={'#'}
               className="absolute top-0 left-0 font-extralight text-white transition-[font-weight] hover:cursor-pointer hover:font-medium"
             >
               Home
-            </Link>
-          </div>
-          <div className="relative">
-            <span className="invisible block font-medium">Episodes</span>
-
-            {/* visible text */}
-            <Link
-              href={'/'}
-              className="absolute top-0 left-0 font-extralight text-white transition-[font-weight] hover:cursor-pointer hover:font-medium"
-            >
-              Episodes
             </Link>
           </div>
           <div className="relative">
@@ -50,10 +40,21 @@ const Footer = () => {
 
             {/* visible text */}
             <Link
-              href={'/'}
+              href={'#about'}
               className="absolute top-0 left-0 font-extralight text-white transition-[font-weight] hover:cursor-pointer hover:font-medium"
             >
               About
+            </Link>
+          </div>
+          <div className="relative">
+            <span className="invisible block font-medium">Launch</span>
+
+            {/* visible text */}
+            <Link
+              href={'#launch'}
+              className="absolute top-0 left-0 font-extralight text-white transition-[font-weight] hover:cursor-pointer hover:font-medium"
+            >
+              Launch
             </Link>
           </div>
         </div>
@@ -88,7 +89,7 @@ const Footer = () => {
         <div className="flex flex-col space-y-4">
           <h3 className="font-sans text-lg font-medium text-white">Follow our Podcast</h3>
           <div className="flex items-center gap-4">
-            <button className="flex items-center justify-center transition-opacity hover:opacity-80">
+            {/* <button className="flex items-center justify-center transition-opacity hover:opacity-80">
               <Link href="/">
                 <Image
                   src="/images/icons/icon-footer-apple-music.svg"
@@ -117,7 +118,7 @@ const Footer = () => {
                   alt="Amazon Music"
                 />
               </Link>
-            </button>
+            </button> */}
             <button className="flex items-center justify-center transition-opacity hover:opacity-80">
               <Link href="/">
                 <Image

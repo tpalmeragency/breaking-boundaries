@@ -1,6 +1,6 @@
 export default function About() {
   return (
-    <section className="bg-(--bb-black) py-12 text-white md:py-20">
+    <section id="about" className="bg-(--bb-black) py-12 text-white md:py-20">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center gap-8 md:flex-row md:gap-20 lg:gap-45">
           {/* Text Content */}
@@ -21,11 +21,11 @@ export default function About() {
               Breaking Boundaries is her latest platform to explore those stories and the people
               redefining what’s possible.
             </p>
-            <div className="inline-block rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 p-[1px] hover:cursor-pointer">
+            {/* <div className="inline-block rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 p-[1px] hover:cursor-pointer">
               <button className="rounded-full bg-(--bb-black) px-11 py-[8px] font-sans font-light transition-colors duration-300 hover:cursor-pointer hover:bg-white hover:text-black">
                 Get in touch
               </button>
-            </div>
+            </div> */}
           </div>
 
           {/* Image */}

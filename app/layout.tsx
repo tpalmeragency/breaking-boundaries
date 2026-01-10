@@ -50,6 +50,12 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        {/* Copyright Section */}
+        <div className="mx-auto w-full bg-[#111111] py-3 text-center">
+          <p className="font-sans text-sm font-extralight text-[#747474]">
+            © 2025. All Rights Reserved. Breaking Boundaries
+          </p>
+        </div>
       </body>
     </html>
   );
