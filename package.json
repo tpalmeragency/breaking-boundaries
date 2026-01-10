@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@sina_byn/re-audio": "^2.1.3",
+    "framer-motion": "^12.25.0",
     "lucide-react": "^0.562.0",
     "next": "16.0.10",
     "react": "19.2.1",

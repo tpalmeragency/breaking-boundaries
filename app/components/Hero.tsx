@@ -1,12 +1,20 @@
 'use client';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function HeroSection() {
   return (
-    // Added 'relative' and 'overflow-hidden'
-    <section className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-(--bb-black) px-6 pb-24 md:flex-row md:px-0 md:pb-0">
+    <section
+      id="hero"
+      className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-(--bb-black) px-6 pb-24 md:flex-row md:px-0 md:pb-0"
+    >
       {/* 1. Left Column: The "B" Graphic */}
-      <div className="relative z-0 flex w-full justify-start md:w-[60%]">
+      <motion.div
+        initial={{ opacity: 0, x: 50, y: 200 }} // Start down and right
+        animate={{ opacity: 1, x: 0, y: 0 }} // End at original position
+        transition={{ duration: 2, delay: 0.6, ease: 'easeOut' }}
+        className="relative z-0 flex w-full justify-start md:w-[60%]"
+      >
         <Image
           src="/images/hero/hero-multiple-b-graphic.svg"
           alt="Breaking Boundaries Logo"
@@ -15,16 +23,26 @@ export default function HeroSection() {
           className="h-auto w-full scale-110 object-contain object-left md:scale-115" // Scale it up to make it "taller"
           priority
         />
-      </div>
+      </motion.div>
+      {/* <div className="relative z-0 flex w-full justify-start md:w-[60%]"></div> */}
 
       {/* 2. Right Column: Content Stack */}
-      {/* Added 'z-10' and 'md:-ml-32' to create the overlap */}
       <div className="z-10 flex w-full flex-col items-start space-y-6 text-left md:mr-20 md:-ml-32 md:w-1/2">
-        <span className="font-display text-[20px] font-normal text-white uppercase md:text-[24px]">
+        <motion.span
+          className="font-display text-[20px] font-normal text-white uppercase md:text-[24px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+        >
           Presented by T Palmer Agency
-        </span>
+        </motion.span>
 
-        <div className="w-full max-w-[500px] lg:max-w-[650px]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          className="w-full max-w-[500px] lg:max-w-[650px]"
+        >
           <Image
             src="/images/hero/hero-b-headline.svg"
             alt="Breaking Boundaries Headline"
@@ -33,15 +51,25 @@ export default function HeroSection() {
             className="max-h-[300px] w-full max-w-[600px] md:max-w-none"
             priority
           />
-        </div>
+        </motion.div>
 
-        <p className="font-montserrat max-w-sm text-[18px] leading-[1.49] font-normal text-gray-200 md:text-xl lg:max-w-lg">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="font-montserrat max-w-sm text-[18px] leading-[1.49] font-normal text-gray-200 md:text-xl lg:max-w-lg"
+          transition={{ duration: 2, delay: 1 }}
+        >
           A podcast exploring leaders who dare to redefine industries, challenge norms, and create
           new paths.
-        </p>
+        </motion.p>
 
         {/* Action Row */}
-        <div className="flex flex-wrap items-center gap-8 pt-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-wrap items-center gap-8 pt-4"
+          transition={{ duration: 2, delay: 1 }}
+        >
           <a
             href="#"
             className="border-gradient-brand tracking-[0.03em]font-medium rounded-md pb-1 text-[20px] text-white transition-colors"
@@ -62,7 +90,7 @@ export default function HeroSection() {
               />
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* 3. The Bottom Gradient Fade */}

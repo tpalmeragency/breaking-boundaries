@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 export default function Header() {
@@ -20,7 +20,12 @@ export default function Header() {
       className={`relative top-0 z-50 flex w-full items-center justify-between border-b border-transparent bg-[var(--bb-black)] px-20 pt-12 text-[var(--bb-white)]`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex items-center gap-3"
+        transition={{ duration: 2, delay: 1 }}
+      >
         <a className="hover:!text-default" href={'/'}>
           <h1 className="sr-only">Navigation Bar</h1>
           <Image
@@ -31,7 +36,7 @@ export default function Header() {
             priority
           />
         </a>
-      </div>
+      </motion.div>
 
       {/* Buttons */}
       <div className="flex items-center">
@@ -39,7 +44,13 @@ export default function Header() {
         <nav className="hidden items-center justify-start font-sans text-[18px] leading-[87%] font-extralight tracking-[0.03em] md:flex">
           <ul className="flex hidden items-center gap-15 sm:flex">
             {navItems.map((item, i) => (
-              <li key={i} className="nav-item font-extra-light flex items-center gap-2">
+              <motion.li
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="nav-item font-extra-light flex items-center gap-2"
+                transition={{ duration: 2, delay: 1 + i * 0.05 }}
+              >
                 <div className="relative">
                   <span className="invisible block font-medium">{item.name}</span>
 
@@ -51,7 +62,7 @@ export default function Header() {
                     {item.name}
                   </a>
                 </div>
-              </li>
+              </motion.li>
             ))}
           </ul>
         </nav>

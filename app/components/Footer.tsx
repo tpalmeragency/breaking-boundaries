@@ -5,7 +5,7 @@ import Image from 'next/image';
 const Footer = () => {
   const textStyles = 'font-sans font-extralight transition-colors';
   return (
-    <footer className="bg-[#0E0E0E] px-6 py-12 text-gray-300 md:px-20">
+    <footer className="z-index-10 relative bg-[#0E0E0E] px-6 py-12 text-gray-300 md:px-20">
       {/* Footer content */}
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 md:flex-row md:items-center">
         {/* Logo Section */}
@@ -29,7 +29,7 @@ const Footer = () => {
 
             {/* visible text */}
             <Link
-              href={'#'}
+              href={'#hero'}
               className="absolute top-0 left-0 font-extralight text-white transition-[font-weight] hover:cursor-pointer hover:font-medium"
             >
               Home
