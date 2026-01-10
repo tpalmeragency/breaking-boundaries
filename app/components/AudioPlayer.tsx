@@ -1,130 +1,200 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
+import { useEpisodeStore } from '../stores/useEpisodeStore';
+import { Play, Pause, SkipForward, Repeat, Volume2, ChevronDown, Music } from 'lucide-react';
 
-interface AudioPlayerProps {
-  src: string
-  title?: string
-}
+export default function AudioPlayer() {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const { currentEpisode, playNext, playPrevious } = useEpisodeStore();
 
-export default function AudioPlayer({ src, title }: AudioPlayerProps) {
-  const audioRef = useRef<HTMLAudioElement>(null)
+  const [playing, setPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const [volume, setVolume] = useState(0.2);
 
-  const [playing, setPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(1)
+  const [isReady, setIsReady] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(true);
 
-  const [isReady, setIsReady] = useState(false)
-  const [isBuffering, setIsBuffering] = useState(true)
+  // Helper to format time as 00:00:00
+  const formatTime = (seconds: number) => {
+    if (isNaN(seconds)) return '00:00';
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+
+    const parts = [
+      hrs > 0 ? hrs.toString().padStart(2, '0') : null,
+      mins.toString().padStart(2, '0'),
+      secs.toString().padStart(2, '0'),
+    ].filter(Boolean);
+
+    return parts.join(':');
+  };
 
   // Force preload & buffer on mount
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    audio.preload = 'auto'
-    audio.load()
-  }, [src])
+    audio.preload = 'auto';
+    audio.load();
+  }, [currentEpisode]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
   const togglePlay = () => {
-    const audio = audioRef.current
-    if (!audio || !isReady || isBuffering) return
+    const audio = audioRef.current;
+    if (!audio || !isReady || isBuffering) return;
 
     if (audio.paused) {
-      audio.play()
-      setPlaying(true)
+      audio.play();
+      setPlaying(true);
     } else {
-      audio.pause()
-      setPlaying(false)
+      audio.pause();
+      setPlaying(false);
     }
-  }
+  };
 
   const seek = (time: number) => {
-    const audio = audioRef.current
-    if (!audio || !isReady) return
+    const audio = audioRef.current;
+    if (!audio || !isReady) return;
 
-    audio.currentTime = Math.min(Math.max(time, 0), duration)
-    setCurrentTime(audio.currentTime)
-  }
+    audio.currentTime = Math.min(Math.max(time, 0), duration);
+    setCurrentTime(audio.currentTime);
+  };
 
   return (
-    <div className="w-full bg-zinc-900 p-4 text-white">
+    <div className="sticky bottom-0 z-10 flex w-full bg-zinc-900 p-4 text-white">
       {/* Audio element */}
       <audio
         ref={audioRef}
-        src={src}
+        src={currentEpisode?.audioSrc}
         preload="auto"
+        onLoadStart={() => {
+          setPlaying(false);
+          setCurrentTime(0);
+          setIsReady(false);
+        }}
         onLoadedMetadata={() => {
-          setDuration(audioRef.current?.duration ?? 0)
+          setDuration(audioRef.current?.duration ?? 0);
         }}
         onCanPlay={() => {
-          setIsReady(true)
-          setIsBuffering(false)
+          setIsReady(true);
+          setIsBuffering(false);
         }}
         onWaiting={() => setIsBuffering(true)}
         onPlaying={() => setIsBuffering(false)}
         onTimeUpdate={() => {
-          setCurrentTime(audioRef.current?.currentTime ?? 0)
+          setCurrentTime(audioRef.current?.currentTime ?? 0);
         }}
         onEnded={() => {
-          setPlaying(false)
+          setPlaying(false);
         }}
         onError={() => {
-          setIsReady(false)
-          setIsBuffering(false)
+          setIsReady(false);
+          setIsBuffering(false);
         }}
       />
 
-      {/* Podcast Metadata */}
-      {title && <div className="mb-2 font-medium">{title}</div>}
+      {/* 1. Thumbnail */}
+      <div className="flex h-18 w-18 flex-shrink-0 items-center justify-center rounded-sm bg-zinc-800">
+        {currentEpisode?.thumbnailSrc ? (
+          <img
+            src={currentEpisode.thumbnailSrc}
+            alt="Cover"
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <Music className="h-6 w-6 text-zinc-500" />
+        )}
+      </div>
 
-      <div className="flex items-center gap-4">
-        {/* PLAY BUTTON */}
-        <button
-          onClick={togglePlay}
-          disabled={!isReady || isBuffering}
-          className={`rounded px-4 py-2 transition ${
-            !isReady || isBuffering
-              ? 'cursor-not-allowed bg-zinc-600 opacity-50'
-              : 'bg-zinc-700 hover:bg-zinc-600'
-          }`}
+      {/* 2. Metadata & Progress Section */}
+      <div className="flex flex-1 flex-col justify-center pl-4">
+        <div className="mb-1 flex flex-col">
+          <span className="text-[16px] font-light text-white">
+            Episode {currentEpisode?.episodeNumber || '0'}
+          </span>
+          <span className="line-clamp-1 text-[18px] font-light text-white">
+            {currentEpisode?.title || 'Select an Episode'}
+          </span>
+        </div>
+
+        {/* Progress Bar Container */}
+        <div className="relative flex flex-col items-end">
+          <input
+            type="range"
+            min={0}
+            max={duration}
+            value={currentTime}
+            onChange={(e) => seek(Number(e.target.value))}
+            className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-zinc-800 accent-purple-500 hover:accent-purple-400"
+            style={{
+              background: `linear-gradient(to right, #444444 ${(currentTime / duration) * 100}%, #8643D5 0%)`,
+            }}
+          />
+          <span className="mt-1 text-[12px] font-light text-white tabular-nums">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </span>
+        </div>
+      </div>
+
+      {/* 3. Controls Section */}
+      <div className="flex items-center gap-5 px-2">
+        <div
+          className="relative flex items-center"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
         >
-          {isBuffering ? 'Loading…' : playing ? 'Pause' : 'Play'}
+          <Volume2 className="h-6 w-6 cursor-pointer" />
+
+          {/* Slider container – grows on hover */}
+          <div
+            className={`overflow-hidden transition-all duration-300 ${hovered ? 'w-24' : 'w-0'}`}
+          >
+            {/* Vertical range input */}
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={(e) => setVolume(Number(e.target.value))}
+              className="w-24 accent-indigo-500"
+            />
+          </div>
+        </div>
+
+        {/* REST OF THE ICONS */}
+        <button className="text-zinc-400 transition hover:text-white">
+          <Repeat size={20} />
         </button>
 
-        {/* TIME */}
-        <span className="text-sm tabular-nums">
-          {Math.floor(currentTime)} / {Math.floor(duration)}s
-        </span>
+        <button
+          onClick={togglePlay}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-black transition hover:scale-105"
+        >
+          {playing ? (
+            <Pause size={20} fill="black" />
+          ) : (
+            <Play size={20} fill="black" className="ml-1" />
+          )}
+        </button>
 
-        {/* SEEK */}
-        <input
-          type="range"
-          min={0}
-          max={duration || 0}
-          step={1}
-          value={currentTime}
-          onChange={(e) => seek(Number(e.target.value))}
-          disabled={!isReady}
-          className="flex-1 accent-indigo-500 disabled:opacity-50"
-        />
+        <button onClick={playNext} className="text-white transition hover:text-purple-400">
+          <SkipForward size={24} fill="white" />
+        </button>
 
-        {/* VOLUME */}
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={volume}
-          onChange={(e) => {
-            const v = Number(e.target.value)
-            setVolume(v)
-            if (audioRef.current) audioRef.current.volume = v
-          }}
-          className="w-24 accent-indigo-500"
-        />
+        {/* <button className="ml-2 self-start text-zinc-400 transition hover:text-white">
+          <ChevronDown size={20} />
+        </button> */}
       </div>
     </div>
-  )
+  );
 }

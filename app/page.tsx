@@ -1,45 +1,51 @@
-import Image from 'next/image'
-import AudioPlayer from './components/AudioPlayer'
+import Image from 'next/image';
+import About from './components/About';
+import AudioPlayer from './components/AudioPlayer';
+import Video from './components/Video';
+import HeroSection from './components/Hero';
+import RecentEpisodes from './components/RecentEpisodes';
+import { getEpisodes } from './util/getEpisodes';
+import Info from './components/Info';
+import CTA from './components/CTA';
+import FadeIn from './components/FadeIn';
 
-export default function Home() {
+export default async function Home() {
+  const sectionConstraints = 'w-full max-w-7xl mx-auto px-6 sm:px-16';
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between bg-white px-16 py-32 sm:items-start dark:bg-black">
-        <AudioPlayer
-          title="Breaking Boundaries"
-          src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3"
-        />
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="font-bebas max-w-xs text-3xl leading-10 font-semibold tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{' '}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{' '}
-            or the{' '}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{' '}
-            center.
-          </p>
-        </div>
+    <div className="bg-(--bb-black) font-sans">
+      <main className="flex w-full flex-col">
+        {/* SECTION 1: Full Width (e.g., a Hero or Highlight) */}
+        <section className="w-full bg-[#111111]">
+          <HeroSection />
+        </section>
+
+        {/* SECTION 2: Contained (With Margins) */}
+        <section
+          className={`${sectionConstraints} flex flex-col items-center bg-(--bb-black) text-center`}
+        >
+          <FadeIn>
+            <Info />
+          </FadeIn>
+          {/* Wrap the video in a dedicated container to handle the spacing */}
+          <div className="w-full">
+            <FadeIn>
+              <Video videoId="Aq5WXmQQooo" />
+            </FadeIn>
+          </div>
+          <FadeIn>
+            <About />
+          </FadeIn>
+          {/* <RecentEpisodes /> */}
+          <FadeIn>
+            <CTA />
+          </FadeIn>
+        </section>
+
+        {/* SECTION 3: Global Audio Player Section */}
+        {/* <AudioPlayer /> */}
+        <section className={sectionConstraints}></section>
       </main>
     </div>
-  )
+  );
 }
