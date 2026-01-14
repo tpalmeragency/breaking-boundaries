@@ -33,7 +33,7 @@ export default function About() {
             <div className="aspect-square overflow-hidden rounded-3xl bg-gradient-to-br from-red-500 via-pink-500 to-purple-500 md:aspect-[497-470] md:aspect-auto">
               {/* Replace this div with your actual image */}
               <img
-                src="/images/about/about-headshot.svg"
+                src="/images/about/about-t-headshot.png"
                 alt="Thien-Nga T Palmer"
                 className="h-full w-full object-cover"
               />

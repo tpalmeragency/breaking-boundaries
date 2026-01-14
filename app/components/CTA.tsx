@@ -37,23 +37,25 @@ export default function CTA() {
         </div>
 
         {/* 2. INPUT GROUP - Given a wider max-width than the text above */}
-        <div className="flex w-full max-w-2xl flex-col items-center gap-4 md:flex-row">
-          <div className="relative w-full flex-1">
+        <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-4 md:flex-row md:justify-center">
+          {/* INPUT */}
+          <div className="w-full md:w-[380px] lg:w-[450px] xl:w-[520px]">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder=""
-              className="w-full rounded-full bg-[#D9D9D9] px-6 py-4 text-left text-black outline-none md:px-8"
+              className="w-full rounded-full bg-[#D9D9D9] px-6 py-4 text-left text-black outline-none"
               disabled={isNotified}
             />
           </div>
 
-          <div className="inline-block flex-shrink-0 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 p-[1px]">
+          {/* BUTTON */}
+          <div className="rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 p-[1px]">
             <button
               onClick={handleNotify}
-              className="rounded-full bg-(--bb-black) px-11 py-3 font-sans text-[18px] font-light text-white transition-all hover:bg-white hover:text-black"
+              className="rounded-full bg-(--bb-black) px-10 py-3 font-sans text-[18px] font-light text-white transition-all hover:bg-white hover:text-black"
             >
               {isLoading ? '...' : 'Notify Me'}
             </button>
