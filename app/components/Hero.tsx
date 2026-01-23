@@ -1,8 +1,19 @@
 'use client';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 export default function HeroSection() {
+  const [isDesktop, setIsDesktop] = useState<boolean | null>(null); // null = unknown
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsDesktop(window.innerWidth >= 768); // only run on client
+  }, []);
+
+  // Don't render until we know screen size
+  if (isDesktop === null) return null;
+
   return (
     <section
       id="hero"
@@ -10,8 +21,8 @@ export default function HeroSection() {
     >
       {/* 1. Left Column: The "B" Graphic */}
       <motion.div
-        initial={{ opacity: 0, x: 50, y: 200 }} // Start down and right
-        animate={{ opacity: 1, x: 0, y: 0 }} // End at original position
+        initial={isDesktop ? { opacity: 0, x: 50, y: 200 } : { opacity: 0 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{ duration: 2, delay: 0.6, ease: 'easeOut' }}
         className="relative z-0 flex w-full justify-start md:w-[60%]"
       >
